@@ -59,4 +59,10 @@ public class DoctorService {
         }
         return response;
     }
+    public List<String> getAvailableSlots(Long doctorId, String date) {
+    // Simulated logic — in real code, query DB
+    List<String> slots = Arrays.asList("10:00", "11:00", "15:00");
+    return slots; // replace with actual repository logic
+}
+
 }
