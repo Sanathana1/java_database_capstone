@@ -13,6 +13,9 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private AuthService authService;
+
 
     @GetMapping
     public List<Doctor> getAllDoctors() {
