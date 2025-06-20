@@ -11,11 +11,8 @@ import com.smartclinic.model.Prescription;
 @RequestMapping("/api/prescriptions")
 public class PrescriptionController {
 
-    @PostMapping
-    public ResponseEntity<String> savePrescription(@Valid @RequestBody Prescription prescription, @RequestHeader("Authorization") String token) {
-        if (token == null || !token.startsWith("Bearer ")) {
-            return new ResponseEntity<>("Unauthorized - Missing token", HttpStatus.UNAUTHORIZED);
-        }
+    @PostMapping("/prescriptions/{token}")
+public ResponseEntity<?> savePrescription(@PathVariable String token, @RequestBody Prescription prescription) {
 
         // Dummy validation logic
         if (prescription.getPatientId() == null || prescription.getDoctorId() == null) {
