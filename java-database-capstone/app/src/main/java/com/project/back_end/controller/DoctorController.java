@@ -52,4 +52,33 @@ public class DoctorController {
     public List<String> getAvailableTimeSlots(@PathVariable int id, @RequestParam String date) {
         return doctorService.getAvailableTimeSlots(id, date);
     }
+    @GetMapping("/doctors/{doctorId}/availability")
+    public ResponseEntity<?> getDoctorAvailability(
+    @PathVariable Long doctorId,
+    @RequestParam String date,
+    @RequestHeader("Authorization") String token,
+    @RequestHeader("Role") String role) {
+
+    // Step 1: Validate token
+    boolean valid = authService.validateToken(token, role);
+    if (!valid) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token or role");
+    }
+
+    // Step 2: Call service method to get availability
+    List<String> availableSlots = doctorService.getAvailableSlots(doctorId, date);
+
+    if (availableSlots == null || availableSlots.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No available slots found for given doctor and date.");
+    }
+
+    // Step 3: Return result
+    Map<String, Object> response = new HashMap<>();
+    response.put("doctorId", doctorId);
+    response.put("date", date);
+    response.put("availableSlots", availableSlots);
+
+    return ResponseEntity.ok(response);
+}
+
 }
